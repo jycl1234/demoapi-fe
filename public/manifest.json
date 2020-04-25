@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "DemoAPI-FE",
+  "name": "A simple React app built to demonstrate basic CRUD.",
   "icons": [
     {
       "src": "favicon.ico",
