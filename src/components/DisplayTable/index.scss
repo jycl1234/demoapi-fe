@@ -1,0 +1,19 @@
+@import "../../constants";
+
+.wrapper--table {
+  margin-bottom: 1rem;
+}
+.ant-btn.button--control {
+  margin: 0 0.5rem;
+  background: $blue;
+  color: $white;
+  &:hover {
+    background: $white;
+    color: $blue;
+    border-color: $blue;
+  }
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}

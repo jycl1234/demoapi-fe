@@ -6,17 +6,22 @@ export interface IOptions extends AxiosRequestConfig {
 }
 
 function apiCall(options: IOptions): Promise<AxiosResponse> {
-  const client = axios.create({
-    url: $apiEndpoint,
-  });
-
+  let url;
   const { type } = options;
   switch (type) {
     case "getAll":
+      url = $apiEndpoint;
+      break;
+    case "getMaxPrices":
+      url = $apiEndpoint + "getmaxprices";
       break;
     default:
       break;
   }
+
+  const client = axios.create({
+    url,
+  });
 
   const onSuccess = (response: any): any => {
     return response.data;

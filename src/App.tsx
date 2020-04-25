@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "./components/Header";
 import DisplayTable from "./components/DisplayTable";
-import UserControls from "./components/UserControls";
 import "./App.scss";
 
 const App: React.FC = () => {
@@ -9,7 +8,6 @@ const App: React.FC = () => {
     <div className="wrapper--main">
       <Header />
       <DisplayTable />
-      <UserControls />
     </div>
   );
 };
