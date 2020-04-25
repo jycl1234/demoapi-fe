@@ -19,6 +19,9 @@ function apiCall(options: IOptions): Promise<AxiosResponse> {
     case "getById":
       url = $apiEndpoint + "getitem/" + userInput;
       break;
+    case "getMaxByItemName":
+      url = $apiEndpoint + "getmaxprice/" + userInput;
+      break;
     default:
       break;
   }

@@ -1,17 +1,17 @@
 export const columns = [
   {
     title: "Id",
-    dataIndex: "id",
+    dataIndex: "Id",
     key: "id",
   },
   {
     title: "Item Name",
-    dataIndex: "itemName",
+    dataIndex: "ItemName",
     key: "itemName",
   },
   {
     title: "Cost",
-    dataIndex: "cost",
+    dataIndex: "Cost",
     key: "cost",
   },
 ];

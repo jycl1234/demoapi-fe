@@ -15,8 +15,13 @@ interface Item {
 
 interface Items extends Array<Item> {}
 
+interface IApiResponse {
+  success: boolean;
+  response: any;
+}
+
 const regexNum = /^[0-9]+$/;
-// const regexAlphaNum = /^[a-zA-Z0-9]+$/;
+const regexAlphaNum = /^[a-zA-Z0-9 ]+$/;
 
 const DisplayTable: React.FC = () => {
   const callApi = async (type: string, userInput: any): Promise<any> => {
@@ -32,6 +37,7 @@ const DisplayTable: React.FC = () => {
   const [hasError, showHasError] = useState(false);
 
   const itemIdRef = useRef<Input>(null);
+  const itemNameRef = useRef<Input>(null);
 
   const resetData = (): void => {
     showHasError(false);
@@ -40,14 +46,25 @@ const DisplayTable: React.FC = () => {
 
   const getAll = async (): Promise<any> => {
     resetData();
-    const result: Items = await callApi("getAll", null);
-    setData(result);
+    const { success, response }: IApiResponse = await callApi("getAll", null);
+    if (success) {
+      setData(response);
+    } else {
+      alert(`Error fetching data.`);
+    }
   };
 
   const getMaxPrices = async (): Promise<any> => {
     resetData();
-    const result: Items = await callApi("getMaxPrices", null);
-    setData(result);
+    const { success, response }: IApiResponse = await callApi(
+      "getMaxPrices",
+      null
+    );
+    if (success) {
+      setData(response);
+    } else {
+      alert(`Error fetching maximum prices.`);
+    }
   };
 
   const getById = async (): Promise<any> => {
@@ -56,15 +73,35 @@ const DisplayTable: React.FC = () => {
     if (!id || id.search(regexNum) === -1) {
       showHasError(true);
     } else {
-      const result: Item = await callApi("getById", id);
-      if (result) {
-        setData([result]);
+      const { success, response }: IApiResponse = await callApi("getById", id);
+      if (success) {
+        setData([response]);
+      } else {
+        alert(`Item with id ${id} was not found.`);
+      }
+    }
+  };
+
+  const getMaxByItemName = async (): Promise<any> => {
+    resetData();
+    const name = itemNameRef.current?.state.value.toUpperCase();
+    if (!name || name.search(regexAlphaNum) === -1) {
+      showHasError(true);
+    } else {
+      const { success, response }: IApiResponse = await callApi(
+        "getMaxByItemName",
+        name
+      );
+      if (success) {
+        alert(`The max price for ${name} is ${response}.`);
+      } else {
+        alert(`${name} was not found.`);
       }
     }
   };
 
   return (
-    <>
+    <div className="wrapper--outer">
       {hasError ? <ErrorMessage /> : null}
       <Row>
         <Col xs={12} className="wrapper--table">
@@ -98,9 +135,15 @@ const DisplayTable: React.FC = () => {
             </Button>
             <Input className="input--control get-by-id" ref={itemIdRef} />
           </div>
+          <div className="wrapper--control">
+            <Button className="button--control" onClick={getMaxByItemName}>
+              Get Max Price By Item Name
+            </Button>
+            <Input className="input--control get-by-name" ref={itemNameRef} />
+          </div>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 

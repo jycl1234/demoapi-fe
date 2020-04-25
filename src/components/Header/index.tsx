@@ -10,6 +10,7 @@ const Header: React.FC = () => {
           This is a simple web app meant to demonstrate basic CRUD
           functionality.
         </p>
+        <p>Currently only supports R.</p>
       </header>
     </div>
   );
