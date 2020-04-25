@@ -3,17 +3,21 @@ import { $apiEndpoint } from "./constants";
 
 export interface IOptions extends AxiosRequestConfig {
   type: string;
+  userInput: any;
 }
 
 function apiCall(options: IOptions): Promise<AxiosResponse> {
   let url;
-  const { type } = options;
+  const { type, userInput } = options;
   switch (type) {
     case "getAll":
       url = $apiEndpoint;
       break;
     case "getMaxPrices":
       url = $apiEndpoint + "getmaxprices";
+      break;
+    case "getById":
+      url = $apiEndpoint + "getitem/" + userInput;
       break;
     default:
       break;

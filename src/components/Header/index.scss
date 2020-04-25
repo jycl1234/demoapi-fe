@@ -1,8 +1,11 @@
 @import "../../constants";
 
-header {
-  text-align: center;
-  h1 {
-    color: $gray;
+.wrapper--header {
+  margin-bottom: 2rem;
+  header {
+    text-align: center;
+    h1 {
+      color: $gray;
+    }
   }
 }
