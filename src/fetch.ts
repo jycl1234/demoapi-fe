@@ -9,6 +9,15 @@ function apiCall(options: IOptions): Promise<AxiosResponse> {
   const client = axios.create({
     url: $apiEndpoint,
   });
+
+  const { type } = options;
+  switch (type) {
+    case "getAll":
+      break;
+    default:
+      break;
+  }
+
   const onSuccess = (response: any): any => {
     return response.data;
   };
