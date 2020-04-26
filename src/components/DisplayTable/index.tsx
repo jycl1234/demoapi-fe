@@ -11,7 +11,7 @@ import {
 import "antd/dist/antd.css";
 import ErrorMessage from "./error";
 import { columns } from "./columns";
-import callEndpoint, { IOptions } from "../../fetch";
+import callEndpoint from "../../fetch";
 
 import {
   controlIconStyles,
@@ -20,20 +20,9 @@ import {
   regexNum,
 } from "../../constants";
 
+import { Item, Items, IApiResponse, IOptions } from "../../Interfaces";
+
 import "./index.scss";
-
-interface Item {
-  Id: number | null;
-  ItemName: string | null;
-  Cost: number | null;
-}
-
-interface Items extends Array<Item> {}
-
-interface IApiResponse {
-  success: boolean;
-  response: any;
-}
 
 const DisplayTable: React.FC = () => {
   const callApi = async (type: string, userInput: any): Promise<any> => {
@@ -82,9 +71,6 @@ const DisplayTable: React.FC = () => {
     const { Id, ItemName, Cost } = record;
     setCurrentItem({ Id, ItemName, Cost });
   };
-
-  // TODO: handleEdit and handleDelete, now that we have the record in state
-  // do we want to go back to inline editing/adding, or a modal?
 
   const getAll = async (): Promise<any> => {
     resetData();

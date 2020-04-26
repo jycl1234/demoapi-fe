@@ -1,10 +1,7 @@
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
 import { $apiEndpoint } from "./constants";
 
-export interface IOptions extends AxiosRequestConfig {
-  type: string;
-  userInput: any;
-}
+import { IOptions } from "./Interfaces";
 
 function apiCall(options: IOptions): Promise<AxiosResponse> {
   let url;

@@ -26,7 +26,7 @@ export const columns = [
     editable: true,
   },
   {
-    title: "Modsify",
+    title: "Modify",
     width: "10%",
     render: () => {
       return (

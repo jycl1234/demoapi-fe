@@ -1,9 +1,7 @@
 import React from "react";
 import { Row, Col } from "antd";
 
-interface IError {
-  message: string | null | undefined;
-}
+import { IError } from "../../Interfaces";
 
 const ErrorMessage: React.FC<IError> = ({ message }) => {
   return (
