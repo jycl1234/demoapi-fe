@@ -2,39 +2,82 @@
 
 .wrapper--outer {
   min-width: 50rem;
-  width: 75vw;
+  width: 50%;
   max-width: 100rem;
+  overflow: hidden;
+
+  .wrapper--error {
+    color: red;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .wrapper--controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+
+    .wrapper--control {
+      margin: 0 1rem;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+
+  .wrapper--inputs {
+    margin-bottom: 0.5rem;
+
+    .wrapper--sub-controls {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+
+      .icon--sub {
+        top: 0.4rem;
+        position: relative;
+        margin-left: 1rem;
+        cursor: pointer;
+      }
+    }
+  }
+
   .wrapper--table {
     margin-bottom: 1rem;
     height: 24rem;
+
+    .ant-table {
+      border: 1px solid $gray;
+    }
   }
+
   .ant-btn.button--control {
     margin: 0.5rem 0;
     background: $blue;
     color: $white;
+
     &:hover {
       background: $white;
       color: $blue;
       border-color: $blue;
     }
+
     &:focus,
     &:active {
       outline: none;
     }
   }
+
   .ant-input.input--control {
-    display: inline-block;
-    margin-left: 0.5rem;
-    &.get-by-id {
-      width: 3rem;
+    text-align: right;
+    width: 10%;
+    float: right;
+    min-width: 10rem;
+
+    .icon--control:hover {
+      cursor: pointer;
     }
-    &.get-by-name {
-      width: 7rem;
-    }
-  }
-  .wrapper--error {
-    color: red;
-    margin-bottom: 2rem;
-    text-align: center;
   }
 }

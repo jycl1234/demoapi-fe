@@ -1,16 +1,21 @@
 @import "./constants";
 
+html,
 body {
-  background: $white;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: $lightGray;
   color: $black;
   font-family: "Montserrat", sans-serif;
 }
-body,
+
 #root {
   position: relative;
-  height: 100vh;
-  width: 100vw;
 }
+
 .wrapper--main {
   display: flex;
   display: -moz-box;
