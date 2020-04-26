@@ -6,11 +6,6 @@ const Header: React.FC = () => {
     <div className="wrapper--header">
       <header>
         <h1>Demo API Frontend</h1>
-        <p>
-          This is a simple web app meant to demonstrate basic CRUD
-          functionality.
-        </p>
-        <p>Currently only supports R.</p>
       </header>
     </div>
   );

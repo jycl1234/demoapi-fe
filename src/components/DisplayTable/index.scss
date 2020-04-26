@@ -1,5 +1,10 @@
 @import "../../constants";
 
+.anticon,
+.anticon:hover {
+  cursor: pointer;
+}
+
 .wrapper--outer {
   min-width: 50rem;
   width: 50%;
@@ -39,7 +44,6 @@
         top: 0.4rem;
         position: relative;
         margin-left: 1rem;
-        cursor: pointer;
       }
     }
   }
@@ -50,6 +54,29 @@
 
     .ant-table {
       border: 1px solid $gray;
+
+      .ant-table-thead>tr>th {
+        font-weight: 700;
+
+        &:first-child,
+        &:last-child {
+          text-align: center;
+        }
+      }
+
+      .ant-table-tbody>tr>td {
+
+        &:first-child,
+        &:last-child {
+          text-align: center;
+        }
+      }
+
+      .wrapper--operations {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
     }
   }
 
@@ -75,9 +102,5 @@
     width: 10%;
     float: right;
     min-width: 10rem;
-
-    .icon--control:hover {
-      cursor: pointer;
-    }
   }
 }

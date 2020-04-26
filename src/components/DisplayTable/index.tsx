@@ -6,18 +6,26 @@ import {
   SortAscendingOutlined,
   FileSearchOutlined,
   CloseCircleOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import ErrorMessage from "./error";
 import { columns } from "./columns";
 import callEndpoint, { IOptions } from "../../fetch";
 
+import {
+  controlIconStyles,
+  subIconStyles,
+  regexAlphaNum,
+  regexNum,
+} from "../../constants";
+
 import "./index.scss";
 
 interface Item {
-  id: number | null;
-  itemName: string | null;
-  cost: number | null;
+  Id: number | null;
+  ItemName: string | null;
+  Cost: number | null;
 }
 
 interface Items extends Array<Item> {}
@@ -26,10 +34,6 @@ interface IApiResponse {
   success: boolean;
   response: any;
 }
-
-const regexNum = /^[0-9]+$/;
-const regexAlphaNum = /^[a-zA-Z0-9 ]+$/;
-const subIconStyles = { fontSize: "1.2rem", color: "#264988" };
 
 const DisplayTable: React.FC = () => {
   const callApi = async (type: string, userInput: any): Promise<any> => {
@@ -45,6 +49,11 @@ const DisplayTable: React.FC = () => {
   const [errMsg, setErrMsg] = useState<string>();
   const [hasError, showHasError] = useState(false);
   const [inputVals, setInputVals] = useState({ id: "", name: "" });
+  const [currentItem, setCurrentItem] = useState<Item>({
+    Id: null,
+    ItemName: "",
+    Cost: null,
+  });
   const [showItemIdField, setShowItemIdField] = useState(false);
   const [showItemNameField, setShowItemNameField] = useState(false);
 
@@ -68,6 +77,14 @@ const DisplayTable: React.FC = () => {
     const { name, value } = e.target;
     setInputVals({ ...inputVals, [name]: value });
   };
+
+  const handleRowSelect = (record: any): void => {
+    const { Id, ItemName, Cost } = record;
+    setCurrentItem({ Id, ItemName, Cost });
+  };
+
+  // TODO: handleEdit and handleDelete, now that we have the record in state
+  // do we want to go back to inline editing/adding, or a modal?
 
   const getAll = async (): Promise<any> => {
     resetData();
@@ -136,6 +153,23 @@ const DisplayTable: React.FC = () => {
     }
   };
 
+  const handleAdd = async (): Promise<any> => {
+    // const { success, response }: IApiResponse = await callApi("getAll", null);
+    // if (success) {
+    //   const newRow: Item = {
+    //     Id: null,
+    //     ItemName: null,
+    //     Cost: null,
+    //   };
+    //   let newData: Items = response;
+    //   newData.push(newRow);
+    //   setData(newData);
+    // } else {
+    //   setErrMsg("Error fetching data.");
+    //   showHasError(true);
+    // }
+  };
+
   useEffect(() => {
     getAll();
     // eslint-disable-next-line
@@ -145,12 +179,21 @@ const DisplayTable: React.FC = () => {
     <div className="wrapper--outer">
       {hasError ? <ErrorMessage message={errMsg} /> : null}
       <Row>
-        <Col xs={24} className="wrapper--controls">
+        <Col xs={2}>
+          <Tooltip title="Add Row">
+            <PlusOutlined
+              className="icon--control"
+              style={controlIconStyles}
+              onClick={handleAdd}
+            />
+          </Tooltip>
+        </Col>
+        <Col xs={22} className="wrapper--controls">
           <div className="wrapper--control">
             <Tooltip title="Get All Values">
               <ReloadOutlined
                 className="icon--control"
-                style={{ fontSize: "1.6rem", color: "#264988" }}
+                style={controlIconStyles}
                 onClick={getAll}
               />
             </Tooltip>
@@ -159,7 +202,7 @@ const DisplayTable: React.FC = () => {
             <Tooltip title="Get Max Prices Sorted by Item Name">
               <SortAscendingOutlined
                 className="icon--control"
-                style={{ fontSize: "1.6rem", color: "#264988" }}
+                style={controlIconStyles}
                 onClick={getMaxPrices}
               />
             </Tooltip>
@@ -243,9 +286,13 @@ const DisplayTable: React.FC = () => {
             columns={columns}
             dataSource={data}
             size="small"
+            onRow={(record: any) => ({
+              onClick: () => {
+                handleRowSelect(record);
+              },
+            })}
             pagination={{
-              defaultPageSize: 5,
-              hideOnSinglePage: true,
+              defaultPageSize: 10,
               showSizeChanger: true,
               pageSizeOptions: ["5", "10", "20", "50"],
             }}
