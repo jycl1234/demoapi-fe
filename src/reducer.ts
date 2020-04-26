@@ -1,31 +1,32 @@
 const reducer = (state: any, action: any) => {
+  const { payload } = action;
   switch (action.type) {
     case "GET_ALL":
       return {
         ...state,
-        data: action.payload,
+        data: payload,
       };
     case "GET_MAX_PRICES":
       return {
         ...state,
-        data: action.payload,
+        data: payload,
       };
     case "GET_BY_ID":
       return {
         ...state,
-        data: [action.payload],
+        data: [payload],
       };
     case "SET_CURRENT_ROW":
       return {
         ...state,
-        currentItem: action.payload,
+        currentItem: payload,
       };
     case "SET_ERROR":
       return {
         ...state,
         error: {
           hasError: true,
-          errMsg: action.payload.errMsg,
+          errMsg: payload.errMsg,
         },
       };
     case "SHOW_ITEM_ID_FIELD":
@@ -48,7 +49,7 @@ const reducer = (state: any, action: any) => {
       return {
         ...state,
         inputVals: {
-          [action.payload.name]: action.payload.value,
+          [payload.name]: payload.value,
         },
       };
     case "RESET_FIELDS":

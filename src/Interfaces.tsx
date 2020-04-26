@@ -40,7 +40,6 @@ interface ShowFields {
 export interface GlobalState {
   data: Items;
   currentItem: Item | null;
-  hasError: boolean;
   inputVals: Inputs;
   error: Error;
   showFields: ShowFields;

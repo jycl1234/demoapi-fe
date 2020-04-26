@@ -27,6 +27,16 @@ import "./index.scss";
 
 const DisplayTable: React.FC = () => {
   const { state, dispatch } = useContext(StateContext);
+  const { data } = state;
+  const {
+    error: { hasError, errMsg },
+  } = state;
+  const {
+    inputVals: { id, name },
+  } = state;
+  const {
+    showFields: { showItemId, showItemName },
+  } = state;
 
   const callApi = async (type: string, userInput: any): Promise<any> => {
     const options: IOptions = {
@@ -92,14 +102,13 @@ const DisplayTable: React.FC = () => {
   };
 
   const getById = async (): Promise<any> => {
-    resetData();
-    const id = state.inputVals.id;
     if (!id || id.search(regexNum) === -1) {
       dispatch({
         type: "SET_ERROR",
         payload: { hasError: true, errMsg: "Please use numbers only." },
       });
     } else {
+      resetData();
       const { success, response }: IApiResponse = await callApi("getById", id);
       if (success) {
         dispatch({ type: "GET_BY_ID", payload: response });
@@ -116,14 +125,13 @@ const DisplayTable: React.FC = () => {
   };
 
   const getMaxByItemName = async (): Promise<any> => {
-    resetData();
-    const name = state.inputVals.name;
     if (!name) {
       dispatch({
         type: "SET_ERROR",
         payload: { hasError: true, errMsg: "Please enter an item name." },
       });
     } else {
+      resetData();
       if (name.search(regexAlphaNum) === -1) {
         dispatch({
           type: "SET_ERROR",
@@ -173,9 +181,7 @@ const DisplayTable: React.FC = () => {
 
   return (
     <div className="wrapper--outer">
-      {state.error.hasError ? (
-        <ErrorMessage message={state.error.errMsg} />
-      ) : null}
+      {hasError ? <ErrorMessage message={errMsg} /> : null}
       <Row>
         <Col xs={2}>
           <Tooltip title="Add Row">
@@ -231,12 +237,12 @@ const DisplayTable: React.FC = () => {
       </Row>
       <Row className="wrapper--inputs">
         <Col xs={24}>
-          {state.showFields.showItemId ? (
+          {showItemId ? (
             <div className="wrapper--sub-controls">
               <Input
                 name="id"
                 className="input--control get-by-id"
-                value={state.inputVals.id}
+                value={id}
                 onChange={handleInputChange}
                 placeholder="Enter id"
               />
@@ -252,12 +258,12 @@ const DisplayTable: React.FC = () => {
               />
             </div>
           ) : null}
-          {state.showFields.showItemName ? (
+          {showItemName ? (
             <div className="wrapper--sub-controls">
               <Input
                 name="name"
                 className="input--control get-by-name"
-                value={state.inputVals.name}
+                value={name}
                 onChange={handleInputChange}
                 placeholder="Enter name"
               />
@@ -280,7 +286,7 @@ const DisplayTable: React.FC = () => {
           <Table
             className="item--table"
             columns={columns}
-            dataSource={state.data}
+            dataSource={data}
             size="small"
             onRow={(record: any) => ({
               onClick: () => {

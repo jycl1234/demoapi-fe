@@ -5,7 +5,6 @@ import { GlobalState } from "./Interfaces";
 export const initState: GlobalState = {
   data: [],
   currentItem: null,
-  hasError: false,
   inputVals: { id: "", name: "" },
   error: { hasError: false, errMsg: "" },
   showFields: { showItemId: false, showItemName: false },
