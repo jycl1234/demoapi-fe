@@ -1,12 +1,16 @@
 import React from "react";
 import { Row, Col } from "antd";
 
-const ErrorMessage: React.FC = () => {
+interface IError {
+  message: string | null | undefined;
+}
+
+const ErrorMessage: React.FC<IError> = ({ message }) => {
   return (
     <Row>
       <Col xs={24} className="wrapper--error">
         <div className="error-outer">
-          <span>Please enter a valid input.</span>
+          <span>{message}</span>
         </div>
       </Col>
     </Row>

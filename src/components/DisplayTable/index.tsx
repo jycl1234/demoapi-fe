@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Table, Input, Button, Row, Col } from "antd";
 import "antd/dist/antd.css";
 import ErrorMessage from "./error";
@@ -34,12 +34,14 @@ const DisplayTable: React.FC = () => {
   };
 
   const [data, setData] = useState<Items>();
+  const [errMsg, setErrMsg] = useState<string>();
   const [hasError, showHasError] = useState(false);
 
   const itemIdRef = useRef<Input>(null);
   const itemNameRef = useRef<Input>(null);
 
   const resetData = (): void => {
+    setErrMsg("");
     showHasError(false);
     setData(undefined);
   };
@@ -50,7 +52,8 @@ const DisplayTable: React.FC = () => {
     if (success) {
       setData(response);
     } else {
-      alert(`Error fetching data.`);
+      setErrMsg("Error fetching data.");
+      showHasError(true);
     }
   };
 
@@ -63,7 +66,8 @@ const DisplayTable: React.FC = () => {
     if (success) {
       setData(response);
     } else {
-      alert(`Error fetching maximum prices.`);
+      setErrMsg("Error fetching maximum prices.");
+      showHasError(true);
     }
   };
 
@@ -77,7 +81,8 @@ const DisplayTable: React.FC = () => {
       if (success) {
         setData([response]);
       } else {
-        alert(`Item with id ${id} was not found.`);
+        setErrMsg(`Item with id ${id} was not found.`);
+        showHasError(true);
       }
     }
   };
@@ -95,14 +100,20 @@ const DisplayTable: React.FC = () => {
       if (success) {
         alert(`The max price for ${name} is ${response}.`);
       } else {
-        alert(`${name} was not found.`);
+        setErrMsg(`${name} was not found.`);
+        showHasError(true);
       }
     }
   };
 
+  useEffect(() => {
+    getAll();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div className="wrapper--outer">
-      {hasError ? <ErrorMessage /> : null}
+      {hasError ? <ErrorMessage message={errMsg} /> : null}
       <Row>
         <Col xs={12} className="wrapper--table">
           <Table
