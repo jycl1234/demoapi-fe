@@ -1,8 +1,5 @@
 import React from "react";
-import { Popconfirm } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-
-import { operationIconStyles } from "../../constants";
+import ColumnOperations from "./operations";
 
 export const columns = [
   {
@@ -29,20 +26,7 @@ export const columns = [
     title: "Modify",
     width: "10%",
     render: () => {
-      return (
-        <div className="wrapper--operations">
-          <EditOutlined
-            className="icon--operations"
-            style={operationIconStyles}
-          />
-          <Popconfirm title="Are you sure you want to delete this row?">
-            <DeleteOutlined
-              className="icon--operations"
-              style={operationIconStyles}
-            />
-          </Popconfirm>
-        </div>
-      );
+      return <ColumnOperations />;
     },
   },
 ];
