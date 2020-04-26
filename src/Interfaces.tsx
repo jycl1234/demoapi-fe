@@ -21,3 +21,18 @@ export interface IApiResponse {
 export interface IError {
   message: string | null | undefined;
 }
+
+interface inputs {
+  id: string | null;
+  name: string | null;
+}
+
+export interface GlobalState {
+  data: Items | null;
+  currentItem: Item | null;
+  hasError: boolean;
+  inputVals: inputs;
+  errMsg: string | null;
+  showItemId: boolean;
+  showItemName: boolean;
+}

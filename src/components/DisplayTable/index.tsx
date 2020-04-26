@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Table, Input, Row, Col, Tooltip } from "antd";
 import {
   ReloadOutlined,
@@ -9,6 +9,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import "antd/dist/antd.css";
+import { StateContext } from "../../Context";
 import ErrorMessage from "./error";
 import { columns } from "./columns";
 import callEndpoint from "../../fetch";
@@ -25,6 +26,8 @@ import { Item, Items, IApiResponse, IOptions } from "../../Interfaces";
 import "./index.scss";
 
 const DisplayTable: React.FC = () => {
+  const { state, dispatch } = useContext(StateContext);
+
   const callApi = async (type: string, userInput: any): Promise<any> => {
     const options: IOptions = {
       type,
@@ -69,7 +72,7 @@ const DisplayTable: React.FC = () => {
 
   const handleRowSelect = (record: any): void => {
     const { Id, ItemName, Cost } = record;
-    setCurrentItem({ Id, ItemName, Cost });
+    // setCurrentItem({ Id, ItemName, Cost });
   };
 
   const getAll = async (): Promise<any> => {
@@ -274,7 +277,7 @@ const DisplayTable: React.FC = () => {
             size="small"
             onRow={(record: any) => ({
               onClick: () => {
-                handleRowSelect(record);
+                dispatch({ type: "SET_CURRENT_ROW", payload: record });
               },
             })}
             pagination={{
