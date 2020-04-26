@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { Table, Input, Row, Col, Tooltip } from "antd";
 import {
   ReloadOutlined,
@@ -21,7 +21,7 @@ import {
   regexNum,
 } from "../../constants";
 
-import { Item, Items, IApiResponse, IOptions } from "../../Interfaces";
+import { IApiResponse, IOptions } from "../../Interfaces";
 
 import "./index.scss";
 
@@ -37,52 +37,41 @@ const DisplayTable: React.FC = () => {
     return result;
   };
 
-  const [data, setData] = useState<Items>();
-  const [errMsg, setErrMsg] = useState<string>();
-  const [hasError, showHasError] = useState(false);
-  const [inputVals, setInputVals] = useState({ id: "", name: "" });
-  const [currentItem, setCurrentItem] = useState<Item>({
-    Id: null,
-    ItemName: "",
-    Cost: null,
-  });
-  const [showItemIdField, setShowItemIdField] = useState(false);
-  const [showItemNameField, setShowItemNameField] = useState(false);
-
-  const hideFields = (): void => {
-    setShowItemIdField(false);
-    setShowItemNameField(false);
+  const resetData = (): void => {
+    dispatch({ type: "RESET_DATA" });
   };
 
   const resetFields = (): void => {
-    setInputVals({ id: "", name: "" });
+    dispatch({ type: "RESET_FIELDS" });
   };
 
-  const resetData = (): void => {
-    setErrMsg("");
-    hideFields();
-    showHasError(false);
-    setData(undefined);
+  const setCurrentRow = (record: any): void => {
+    dispatch({ type: "SET_CURRENT_ROW", payload: record });
+  };
+
+  const showItemIdField = (): void => {
+    dispatch({ type: "SHOW_ITEM_ID_FIELD" });
+  };
+
+  const showItemNameField = (): void => {
+    dispatch({ type: "SHOW_ITEM_NAME_FIELD" });
   };
 
   const handleInputChange = (e: React.ChangeEvent<any>): void => {
     const { name, value } = e.target;
-    setInputVals({ ...inputVals, [name]: value });
-  };
-
-  const handleRowSelect = (record: any): void => {
-    const { Id, ItemName, Cost } = record;
-    // setCurrentItem({ Id, ItemName, Cost });
+    dispatch({ type: "SET_INPUT_VALUE", payload: { name, value } });
   };
 
   const getAll = async (): Promise<any> => {
     resetData();
     const { success, response }: IApiResponse = await callApi("getAll", null);
     if (success) {
-      setData(response);
+      dispatch({ type: "GET_ALL", payload: response });
     } else {
-      setErrMsg("Error fetching data.");
-      showHasError(true);
+      dispatch({
+        type: "SET_ERROR",
+        payload: { hasError: true, errMsg: "Error fetching data." },
+      });
     }
   };
 
@@ -93,40 +82,56 @@ const DisplayTable: React.FC = () => {
       null
     );
     if (success) {
-      setData(response);
+      dispatch({ type: "GET_MAX_PRICES", payload: response });
     } else {
-      setErrMsg("Error fetching maximum prices.");
-      showHasError(true);
+      dispatch({
+        type: "SET_ERROR",
+        payload: { hasError: true, errMsg: "Error fetching maximum prices." },
+      });
     }
   };
 
   const getById = async (): Promise<any> => {
     resetData();
-    const { id } = inputVals;
+    const id = state.inputVals.id;
     if (!id || id.search(regexNum) === -1) {
-      setErrMsg("Please use numbers only.");
-      showHasError(true);
+      dispatch({
+        type: "SET_ERROR",
+        payload: { hasError: true, errMsg: "Please use numbers only." },
+      });
     } else {
       const { success, response }: IApiResponse = await callApi("getById", id);
       if (success) {
-        setData([response]);
+        dispatch({ type: "GET_BY_ID", payload: response });
       } else {
-        setErrMsg(`Item with id ${id} was not found.`);
-        showHasError(true);
+        dispatch({
+          type: "SET_ERROR",
+          payload: {
+            hasError: true,
+            errMsg: `Item with id ${id} was not found.`,
+          },
+        });
       }
     }
   };
 
   const getMaxByItemName = async (): Promise<any> => {
     resetData();
-    const { name } = inputVals;
+    const name = state.inputVals.name;
     if (!name) {
-      setErrMsg("Please enter an item name.");
-      showHasError(true);
+      dispatch({
+        type: "SET_ERROR",
+        payload: { hasError: true, errMsg: "Please enter an item name." },
+      });
     } else {
       if (name.search(regexAlphaNum) === -1) {
-        setErrMsg("Please use only alphanumeric characters.");
-        showHasError(true);
+        dispatch({
+          type: "SET_ERROR",
+          payload: {
+            hasError: true,
+            errMsg: "Please use only alphanumeric characters.",
+          },
+        });
       } else {
         const { success, response }: IApiResponse = await callApi(
           "getMaxByItemName",
@@ -135,8 +140,10 @@ const DisplayTable: React.FC = () => {
         if (success) {
           alert(`The max price for ${name} is ${response}.`);
         } else {
-          setErrMsg(`${name} was not found.`);
-          showHasError(true);
+          dispatch({
+            type: "SET_ERROR",
+            payload: { hasError: true, errMsg: `${name} was not found.` },
+          });
         }
       }
     }
@@ -166,7 +173,9 @@ const DisplayTable: React.FC = () => {
 
   return (
     <div className="wrapper--outer">
-      {hasError ? <ErrorMessage message={errMsg} /> : null}
+      {state.error.hasError ? (
+        <ErrorMessage message={state.error.errMsg} />
+      ) : null}
       <Row>
         <Col xs={2}>
           <Tooltip title="Add Row">
@@ -202,8 +211,7 @@ const DisplayTable: React.FC = () => {
                 className="icon--control"
                 style={{ fontSize: "1.6rem", color: "#264988" }}
                 onClick={() => {
-                  hideFields();
-                  setShowItemIdField(true);
+                  showItemIdField();
                 }}
               />
             </Tooltip>
@@ -214,8 +222,7 @@ const DisplayTable: React.FC = () => {
                 className="icon--control"
                 style={{ fontSize: "1.6rem", color: "#264988" }}
                 onClick={() => {
-                  hideFields();
-                  setShowItemNameField(true);
+                  showItemNameField();
                 }}
               />
             </Tooltip>
@@ -224,12 +231,12 @@ const DisplayTable: React.FC = () => {
       </Row>
       <Row className="wrapper--inputs">
         <Col xs={24}>
-          {showItemIdField ? (
+          {state.showFields.showItemId ? (
             <div className="wrapper--sub-controls">
               <Input
                 name="id"
                 className="input--control get-by-id"
-                value={inputVals.id}
+                value={state.inputVals.id}
                 onChange={handleInputChange}
                 placeholder="Enter id"
               />
@@ -245,12 +252,12 @@ const DisplayTable: React.FC = () => {
               />
             </div>
           ) : null}
-          {showItemNameField ? (
+          {state.showFields.showItemName ? (
             <div className="wrapper--sub-controls">
               <Input
                 name="name"
                 className="input--control get-by-name"
-                value={inputVals.name}
+                value={state.inputVals.name}
                 onChange={handleInputChange}
                 placeholder="Enter name"
               />
@@ -273,11 +280,11 @@ const DisplayTable: React.FC = () => {
           <Table
             className="item--table"
             columns={columns}
-            dataSource={data}
+            dataSource={state.data}
             size="small"
             onRow={(record: any) => ({
               onClick: () => {
-                dispatch({ type: "SET_CURRENT_ROW", payload: record });
+                setCurrentRow(record);
               },
             })}
             pagination={{
