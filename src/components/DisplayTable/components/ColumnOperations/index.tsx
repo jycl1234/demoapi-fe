@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { StateContext } from "../../Context";
-import { operationIconStyles } from "../../constants";
+import { StateContext } from "../../../../Context";
+import { operationIconStyles } from "../../../../constants";
 
 const ColumnOperations: React.FC = () => {
   const { state, dispatch } = useContext(StateContext);

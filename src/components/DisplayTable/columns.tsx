@@ -1,5 +1,5 @@
 import React from "react";
-import ColumnOperations from "./operations";
+import ColumnOperations from "./components/ColumnOperations";
 
 export const columns = [
   {

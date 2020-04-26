@@ -81,6 +81,33 @@ const reducer = (state: any, action: any) => {
         ...state,
         data: {},
       };
+    case "OPEN_MODAL":
+      return {
+        ...state,
+        operations: {
+          ...state.operations,
+          modalOpen: true,
+        },
+      };
+    case "SET_MODAL_INPUT_VALUE":
+      return {
+        ...state,
+        operations: {
+          ...state.operations,
+          item: {
+            ...state.operations.item,
+            [payload.name]: payload.value,
+          },
+        },
+      };
+    case "CLOSE_MODAL":
+      return {
+        ...state,
+        operations: {
+          ...state.operations,
+          modalOpen: false,
+        },
+      };
     default:
       return state;
   }

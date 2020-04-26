@@ -8,6 +8,14 @@ export const initState: GlobalState = {
   inputVals: { id: "", name: "" },
   error: { hasError: false, errMsg: "" },
   showFields: { showItemId: false, showItemName: false },
+  operations: {
+    modalOpen: false,
+    item: {
+      Id: "",
+      ItemName: "",
+      Cost: "",
+    },
+  },
 };
 
 export const StateContext = createContext<{

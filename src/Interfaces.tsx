@@ -1,9 +1,9 @@
 import { AxiosRequestConfig } from "axios";
 
 export interface Item {
-  Id: number | null;
-  ItemName: string | null;
-  Cost: number | null;
+  Id: string | null | undefined;
+  ItemName: string | null | undefined;
+  Cost: string | null | undefined;
 }
 
 export interface Items extends Array<Item> {}
@@ -27,20 +27,26 @@ interface Inputs {
   name: string;
 }
 
-interface Error {
+interface IErrorMsg {
   hasError: boolean;
   errMsg: string;
 }
 
-interface ShowFields {
+interface IShowFields {
   showItemId: boolean;
   showItemName: boolean;
+}
+
+interface IOperations {
+  modalOpen: boolean;
+  item: Item;
 }
 
 export interface GlobalState {
   data: Items;
   currentItem: Item | null;
   inputVals: Inputs;
-  error: Error;
-  showFields: ShowFields;
+  error: IErrorMsg;
+  showFields: IShowFields;
+  operations: IOperations;
 }

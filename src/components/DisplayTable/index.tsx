@@ -10,7 +10,8 @@ import {
 } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { StateContext } from "../../Context";
-import ErrorMessage from "./error";
+import ErrorMessage from "./components/ErrorMessage";
+import OperationsModal from "./components/Modal";
 import { columns } from "./columns";
 import callEndpoint from "../../fetch";
 
@@ -158,6 +159,7 @@ const DisplayTable: React.FC = () => {
   };
 
   const handleAdd = async (): Promise<any> => {
+    dispatch({ type: "OPEN_MODAL" });
     // const { success, response }: IApiResponse = await callApi("getAll", null);
     // if (success) {
     //   const newRow: Item = {
@@ -181,6 +183,7 @@ const DisplayTable: React.FC = () => {
 
   return (
     <div className="wrapper--outer">
+      <OperationsModal />
       {hasError ? <ErrorMessage message={errMsg} /> : null}
       <Row>
         <Col xs={2}>
