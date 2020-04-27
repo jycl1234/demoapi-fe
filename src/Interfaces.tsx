@@ -10,7 +10,7 @@ export interface Items extends Array<Item> {}
 
 export interface IOptions extends AxiosRequestConfig {
   type: string;
-  userInput: any;
+  data: any;
 }
 
 export interface IApiResponse {
@@ -39,6 +39,7 @@ interface IShowFields {
 
 interface IOperations {
   modalOpen: boolean;
+  actionType: string | null;
   item: Item;
 }
 

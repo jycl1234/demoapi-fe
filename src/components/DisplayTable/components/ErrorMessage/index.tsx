@@ -3,6 +3,8 @@ import { Row, Col } from "antd";
 
 import { IError } from "../../../../Interfaces";
 
+import "./styles.scss";
+
 const ErrorMessage: React.FC<IError> = ({ message }) => {
   return (
     <Row>

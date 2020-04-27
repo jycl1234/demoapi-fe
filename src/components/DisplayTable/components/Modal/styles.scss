@@ -1,0 +1,40 @@
+@import "../../../../constants";
+
+.operations-modal {
+
+    .row--modal-header {
+        margin-bottom: 1rem;
+        font-weight: bold;
+    }
+
+    .row--modal-fields {
+
+        .input--modal.id,
+        .input--modal.item-name {
+            width: 96%;
+        }
+    }
+
+    .row--modal-controls>.ant-col {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .button--modal-submit {
+        background: $blue;
+        border: 1px solid $white;
+
+        &:hover {
+            background: $white;
+            border: 1px solid $blue;
+            color: $blue;
+        }
+
+        &:active,
+        &:focus {
+            outline: none;
+        }
+    }
+}

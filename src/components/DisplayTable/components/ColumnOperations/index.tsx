@@ -4,6 +4,8 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { StateContext } from "../../../../Context";
 import { operationIconStyles } from "../../../../constants";
 
+import "./styles.scss";
+
 const ColumnOperations: React.FC = () => {
   const { state, dispatch } = useContext(StateContext);
   const { currentItem } = state;
@@ -12,8 +14,10 @@ const ColumnOperations: React.FC = () => {
   // leading to desynced state
 
   const handleEdit = (e: any): void => {
-    console.log(currentItem);
-    //   dispatch({ type: "EDIT_ITEM", payload: "" });
+    dispatch({
+      type: "OPEN_MODAL",
+      payload: { actionType: "updateItem" },
+    });
   };
 
   const handleDelete = (): void => {

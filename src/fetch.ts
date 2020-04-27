@@ -1,31 +1,65 @@
-import axios, { AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosResponse, AxiosError, AxiosRequestConfig } from "axios";
 import { $apiEndpoint } from "./constants";
 
 import { IOptions } from "./Interfaces";
 
 function apiCall(options: IOptions): Promise<AxiosResponse> {
-  let url;
-  const { type, userInput } = options;
+  axios.defaults.headers.post["Accept"] = "application/json";
+
+  let reqOptions: AxiosRequestConfig;
+  const { type, data } = options;
   switch (type) {
     case "getAll":
-      url = $apiEndpoint;
+      reqOptions = {
+        method: "GET",
+        url: $apiEndpoint,
+      };
       break;
     case "getMaxPrices":
-      url = $apiEndpoint + "getmaxprices";
+      reqOptions = {
+        method: "GET",
+        url: $apiEndpoint + "getmaxprices",
+      };
       break;
     case "getById":
-      url = $apiEndpoint + "getitem/" + userInput;
+      reqOptions = {
+        method: "GET",
+        url: $apiEndpoint + "getitem/" + data,
+      };
       break;
     case "getMaxByItemName":
-      url = $apiEndpoint + "getmaxprice/" + userInput;
+      reqOptions = {
+        method: "GET",
+        url: $apiEndpoint + "getmaxprice/" + data,
+      };
+      break;
+    case "addItem":
+      reqOptions = {
+        method: "POST",
+        url: $apiEndpoint + "add",
+        data,
+      };
+      break;
+    case "updateItem":
+      reqOptions = {
+        method: "POST",
+        url: $apiEndpoint + "update",
+        data,
+      };
+      break;
+    case "deleteItem":
+      reqOptions = {
+        method: "POST",
+        url: $apiEndpoint + "delete/" + data,
+        data,
+      };
       break;
     default:
+      reqOptions = {};
       break;
   }
 
-  const client = axios.create({
-    url,
-  });
+  const client = axios.create(reqOptions);
 
   const onSuccess = (response: any): any => {
     return response.data;

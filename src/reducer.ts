@@ -75,6 +75,14 @@ const reducer = (state: any, action: any) => {
           hasError: false,
           errMsg: "",
         },
+        operations: {
+          ...state.operations,
+          item: {
+            Id: "",
+            ItemName: "",
+            Cost: "",
+          },
+        },
       };
     case "RESET_ITEMS":
       return {
@@ -87,6 +95,7 @@ const reducer = (state: any, action: any) => {
         operations: {
           ...state.operations,
           modalOpen: true,
+          actionType: payload.actionType,
         },
       };
     case "SET_MODAL_INPUT_VALUE":
@@ -100,12 +109,25 @@ const reducer = (state: any, action: any) => {
           },
         },
       };
+    case "RESET_MODAL_INPUT_VALUES":
+      return {
+        ...state,
+        operations: {
+          ...state.operations,
+          item: {
+            Id: "",
+            ItemName: "",
+            Cost: "",
+          },
+        },
+      };
     case "CLOSE_MODAL":
       return {
         ...state,
         operations: {
           ...state.operations,
           modalOpen: false,
+          actionType: "",
         },
       };
     default:

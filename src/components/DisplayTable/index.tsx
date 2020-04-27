@@ -13,7 +13,7 @@ import { StateContext } from "../../Context";
 import ErrorMessage from "./components/ErrorMessage";
 import OperationsModal from "./components/Modal";
 import { columns } from "./columns";
-import callEndpoint from "../../fetch";
+import { callApi } from "../../callApi";
 
 import {
   controlIconStyles,
@@ -22,7 +22,7 @@ import {
   regexNum,
 } from "../../constants";
 
-import { IApiResponse, IOptions } from "../../Interfaces";
+import { IApiResponse } from "../../Interfaces";
 
 import "./index.scss";
 
@@ -38,15 +38,6 @@ const DisplayTable: React.FC = () => {
   const {
     showFields: { showItemId, showItemName },
   } = state;
-
-  const callApi = async (type: string, userInput: any): Promise<any> => {
-    const options: IOptions = {
-      type,
-      userInput,
-    };
-    let result = await callEndpoint(options);
-    return result;
-  };
 
   const resetData = (): void => {
     dispatch({ type: "RESET_DATA" });
@@ -159,21 +150,11 @@ const DisplayTable: React.FC = () => {
   };
 
   const handleAdd = async (): Promise<any> => {
-    dispatch({ type: "OPEN_MODAL" });
-    // const { success, response }: IApiResponse = await callApi("getAll", null);
-    // if (success) {
-    //   const newRow: Item = {
-    //     Id: null,
-    //     ItemName: null,
-    //     Cost: null,
-    //   };
-    //   let newData: Items = response;
-    //   newData.push(newRow);
-    //   setData(newData);
-    // } else {
-    //   setErrMsg("Error fetching data.");
-    //   showHasError(true);
-    // }
+    dispatch({ type: "RESET_DATA" });
+    dispatch({
+      type: "OPEN_MODAL",
+      payload: { actionType: "addItem" },
+    });
   };
 
   useEffect(() => {

@@ -10,6 +10,7 @@ export const initState: GlobalState = {
   showFields: { showItemId: false, showItemName: false },
   operations: {
     modalOpen: false,
+    actionType: "",
     item: {
       Id: "",
       ItemName: "",
