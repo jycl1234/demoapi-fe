@@ -30,6 +30,8 @@ interface Inputs {
 interface IErrorMsg {
   hasError: boolean;
   errMsg: string;
+  itemErrorClass: string;
+  costErrorClass: string;
 }
 
 interface IShowFields {

@@ -6,7 +6,12 @@ export const initState: GlobalState = {
   data: [],
   currentItem: null,
   inputVals: { id: "", name: "" },
-  error: { hasError: false, errMsg: "" },
+  error: {
+    hasError: false,
+    errMsg: "",
+    itemErrorClass: "",
+    costErrorClass: "",
+  },
   showFields: { showItemId: false, showItemName: false },
   operations: {
     modalOpen: false,

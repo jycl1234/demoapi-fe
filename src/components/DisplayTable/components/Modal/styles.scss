@@ -13,6 +13,10 @@
         .input--modal.item-name {
             width: 96%;
         }
+
+        .input--modal.validation-error {
+            border: 1px solid red;
+        }
     }
 
     .row--modal-controls>.ant-col {

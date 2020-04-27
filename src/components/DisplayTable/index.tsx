@@ -11,7 +11,7 @@ import {
 import "antd/dist/antd.css";
 import { StateContext } from "../../Context";
 import ErrorMessage from "./components/ErrorMessage";
-import OperationsModal from "./components/Modal";
+import ItemModal from "./components/Modal";
 import { columns } from "./columns";
 import { callApi } from "../../callApi";
 
@@ -25,6 +25,11 @@ import {
 import { IApiResponse } from "../../Interfaces";
 
 import "./index.scss";
+
+// TODO:
+// refactor getAll and resetData
+// better error UX on modal validation
+// refactor modal field value reducer action to use spread operator + array
 
 const DisplayTable: React.FC = () => {
   const { state, dispatch } = useContext(StateContext);
@@ -136,7 +141,7 @@ const DisplayTable: React.FC = () => {
       } else {
         const { success, response }: IApiResponse = await callApi(
           "getMaxByItemName",
-          name.toUpperCase()
+          name
         );
         if (success) {
           alert(`The max price for ${name} is ${response}.`);
@@ -165,7 +170,7 @@ const DisplayTable: React.FC = () => {
 
   return (
     <div className="wrapper--outer">
-      <OperationsModal />
+      <ItemModal />
       {hasError ? <ErrorMessage message={errMsg} /> : null}
       <Row>
         <Col xs={2}>

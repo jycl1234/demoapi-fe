@@ -26,6 +26,7 @@ const reducer = (state: any, action: any) => {
       return {
         ...state,
         error: {
+          ...state.error,
           hasError: true,
           errMsg: payload.errMsg,
         },
@@ -75,6 +76,8 @@ const reducer = (state: any, action: any) => {
         error: {
           hasError: false,
           errMsg: "",
+          itemErrorClass: "",
+          costErrorClass: "",
         },
         operations: {
           ...state.operations,
@@ -110,6 +113,15 @@ const reducer = (state: any, action: any) => {
           },
         },
       };
+    case "SET_MODAL_ERROR":
+      console.log(payload);
+      return {
+        ...state,
+        error: {
+          ...state.error,
+          [payload.name]: payload.value,
+        },
+      };
     case "RESET_MODAL_INPUT_VALUES":
       return {
         ...state,
@@ -121,6 +133,11 @@ const reducer = (state: any, action: any) => {
             Cost: "",
           },
         },
+        error: {
+          ...state.error,
+          itemErrorClass: "",
+          costErrorClass: "",
+        },
       };
     case "CLOSE_MODAL":
       return {
@@ -129,6 +146,11 @@ const reducer = (state: any, action: any) => {
           ...state.operations,
           modalOpen: false,
           actionType: "",
+        },
+        error: {
+          ...state.error,
+          itemErrorClass: "",
+          costErrorClass: "",
         },
       };
     default:

@@ -8,11 +8,6 @@ import { IApiResponse } from "../../../../Interfaces";
 
 import "./styles.scss";
 
-// TODO:
-// refactor redundant code in 3 components
-// refactor modal field value reducer action to use spread operator + array instead of 3x
-// regex validation of user inputs and error UX
-
 const ColumnOperations: React.FC<any> = ({ record }) => {
   const { dispatch } = useContext(StateContext);
 

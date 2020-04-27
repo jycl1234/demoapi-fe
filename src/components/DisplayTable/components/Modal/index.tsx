@@ -3,7 +3,7 @@ import { Modal, Col, Row, Input, Button } from "antd";
 import { StateContext } from "../../../../Context";
 import { callApi } from "../../../../callApi";
 
-// import { regexAlphaNum, regexNum } from "../../constants";
+import { regexAlphaNum, regexNum } from "../../../../constants";
 
 import { IApiResponse } from "../../../../Interfaces";
 
@@ -12,6 +12,7 @@ import "./styles.scss";
 const ItemModal: React.FC = () => {
   const { state, dispatch } = useContext(StateContext);
   const {
+    error: { itemErrorClass, costErrorClass },
     operations: {
       modalOpen,
       item: { Id, ItemName, Cost },
@@ -51,27 +52,53 @@ const ItemModal: React.FC = () => {
   };
 
   const handleSubmit = async (): Promise<any> => {
-    let payload = {};
-    switch (actionType) {
-      case "addItem":
-        payload = { ItemName, Cost: parseInt(Cost!) };
-        break;
-      case "updateItem":
-        payload = { Id: parseInt(Id!), ItemName, Cost: parseInt(Cost!) };
-        break;
-      default:
-        break;
+    let errors = 0;
+    console.log(state, itemErrorClass, costErrorClass);
+    if (!ItemName || ItemName === "") {
+      errors++;
+      // const payload = { name: "itemNameError", value: "validation-error" };
+      // dispatch({ type: "SET_MODAL_ERROR", payload });
     }
-    try {
-      const { success }: IApiResponse = await callApi(actionType!, payload);
-      if (success) {
-        dispatch({ type: "CLOSE_MODAL" });
-        getAll();
-      } else {
+    if (ItemName && ItemName.search(regexAlphaNum) === -1) {
+      errors++;
+      // const payload = { name: "itemNameError", value: "validation-error" };
+      // dispatch({ type: "SET_MODAL_ERROR", payload });
+    }
+    if (!Cost || Cost === "") {
+      errors++;
+      // const payload = { name: "costError", value: "validation-error" };
+      // dispatch({ type: "SET_MODAL_ERROR", payload });
+    }
+    if (Cost && Cost.search(regexNum) === -1) {
+      errors++;
+      // const payload = { name: "costError", value: "validation-error" };
+      // dispatch({ type: "SET_MODAL_ERROR", payload });
+    }
+    if (errors === 0) {
+      let payload = {};
+      switch (actionType) {
+        case "addItem":
+          payload = { ItemName, Cost: parseInt(Cost!) };
+          break;
+        case "updateItem":
+          payload = { Id: parseInt(Id!), ItemName, Cost: parseInt(Cost!) };
+          break;
+        default:
+          break;
+      }
+      try {
+        const { success }: IApiResponse = await callApi(actionType!, payload);
+        if (success) {
+          dispatch({ type: "CLOSE_MODAL" });
+          getAll();
+        } else {
+          handleSaveError();
+        }
+      } catch {
         handleSaveError();
       }
-    } catch {
-      handleSaveError();
+    } else {
+      alert("Please check your values and try again.");
     }
   };
 
@@ -111,7 +138,8 @@ const ItemModal: React.FC = () => {
           <Col xs={8} className="wrapper--modal-field">
             <Input
               name="ItemName"
-              className="input--modal item-name"
+              data-id={`${itemErrorClass}`}
+              className={`input--modal item-name ${itemErrorClass}`}
               value={ItemName!}
               onChange={handleChange}
             />
@@ -119,7 +147,8 @@ const ItemModal: React.FC = () => {
           <Col xs={8} className="wrapper--modal-field">
             <Input
               name="Cost"
-              className="input--modal cost"
+              data-id={`${costErrorClass}`}
+              className={`input--modal cost ${costErrorClass}`}
               value={Cost!}
               onChange={handleChange}
             />
