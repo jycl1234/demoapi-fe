@@ -48,6 +48,7 @@ const DisplayTable: React.FC = () => {
   };
 
   const setCurrentRow = (record: any): void => {
+    console.log("set current row", record);
     dispatch({ type: "SET_CURRENT_ROW", payload: record });
   };
 
@@ -272,6 +273,7 @@ const DisplayTable: React.FC = () => {
             columns={columns}
             dataSource={data}
             size="small"
+            rowKey={(record) => record.Id!}
             onRow={(record: any) => ({
               onClick: () => {
                 setCurrentRow(record);

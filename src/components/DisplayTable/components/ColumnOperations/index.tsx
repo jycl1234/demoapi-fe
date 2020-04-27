@@ -4,20 +4,17 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { StateContext } from "../../../../Context";
 import { callApi } from "../../../../callApi";
 import { operationIconStyles } from "../../../../constants";
-
 import { IApiResponse } from "../../../../Interfaces";
 
 import "./styles.scss";
 
 // TODO:
-// fix currentItem desync due to onRow click event not firing on Operations icons
 // refactor redundant code in 3 components
 // refactor modal field value reducer action to use spread operator + array instead of 3x
 // regex validation of user inputs and error UX
 
-const ColumnOperations: React.FC = () => {
-  const { state, dispatch } = useContext(StateContext);
-  const { currentItem } = state;
+const ColumnOperations: React.FC<any> = ({ record }) => {
+  const { dispatch } = useContext(StateContext);
 
   const resetData = (): void => {
     dispatch({ type: "RESET_DATA" });
@@ -45,37 +42,34 @@ const ColumnOperations: React.FC = () => {
   };
 
   const handleEdit = (): void => {
-    if (currentItem) {
-      const { Id, ItemName, Cost } = currentItem;
-      const payloadId = { name: "Id", value: Id };
-      const payloadItemName = { name: "ItemName", value: ItemName };
-      const payloadCost = { name: "Cost", value: Cost };
-      dispatch({ type: "SET_MODAL_INPUT_VALUE", payload: payloadId });
-      dispatch({ type: "SET_MODAL_INPUT_VALUE", payload: payloadItemName });
-      dispatch({ type: "SET_MODAL_INPUT_VALUE", payload: payloadCost });
-      dispatch({
-        type: "OPEN_MODAL",
-        payload: { actionType: "updateItem" },
-      });
-    }
+    const { Id, ItemName, Cost } = record;
+    const payloadId = { name: "Id", value: Id };
+    const payloadItemName = { name: "ItemName", value: ItemName };
+    const payloadCost = { name: "Cost", value: Cost };
+    dispatch({ type: "SET_MODAL_INPUT_VALUE", payload: payloadId });
+    dispatch({ type: "SET_MODAL_INPUT_VALUE", payload: payloadItemName });
+    dispatch({ type: "SET_MODAL_INPUT_VALUE", payload: payloadCost });
+    dispatch({
+      type: "OPEN_MODAL",
+      payload: { actionType: "updateItem" },
+    });
   };
 
   const handleDelete = async (): Promise<any> => {
-    if (currentItem) {
-      const { Id } = currentItem;
-      try {
-        const { success }: IApiResponse = await callApi("deleteItem", Id);
-        if (success) {
-          dispatch({ type: "CLOSE_MODAL" });
-          getAll();
-        } else {
-          handleSaveError("Error deleting item.");
-        }
-      } catch {
+    const { Id } = record;
+    try {
+      const { success }: IApiResponse = await callApi("deleteItem", Id);
+      if (success) {
+        dispatch({ type: "CLOSE_MODAL" });
+        getAll();
+      } else {
         handleSaveError("Error deleting item.");
       }
+    } catch {
+      handleSaveError("Error deleting item.");
     }
   };
+
   return (
     <div className="wrapper--operations">
       <EditOutlined

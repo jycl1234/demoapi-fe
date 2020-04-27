@@ -17,6 +17,7 @@ const reducer = (state: any, action: any) => {
         data: [payload],
       };
     case "SET_CURRENT_ROW":
+      console.log("reducer", payload);
       return {
         ...state,
         currentItem: payload,

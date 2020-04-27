@@ -5,3 +5,18 @@
     align-items: center;
     justify-content: space-around;
 }
+
+.ant-popover-buttons .ant-btn-primary {
+    background: $blue;
+
+    &:hover {
+        background: $white;
+        color: $blue;
+        border-color: $blue;
+    }
+
+    &:focus,
+    &:active {
+        outline: none;
+    }
+}

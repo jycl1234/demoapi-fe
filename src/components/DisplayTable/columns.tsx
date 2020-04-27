@@ -13,20 +13,18 @@ export const columns = [
     dataIndex: "ItemName",
     key: "itemName",
     width: "40%",
-    editable: true,
   },
   {
     title: "Cost",
     dataIndex: "Cost",
     key: "cost",
     width: "30%",
-    editable: true,
   },
   {
     title: "Modify",
     width: "10%",
-    render: () => {
-      return <ColumnOperations />;
+    render: (record: any) => {
+      return <ColumnOperations record={record} />;
     },
   },
 ];
