@@ -56,7 +56,7 @@ const ItemModal: React.FC = () => {
       case "addItem":
         payload = { ItemName, Cost: parseInt(Cost!) };
         break;
-      case "editItem":
+      case "updateItem":
         payload = { Id: parseInt(Id!), ItemName, Cost: parseInt(Cost!) };
         break;
       default:

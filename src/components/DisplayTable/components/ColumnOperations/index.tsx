@@ -9,12 +9,15 @@ import { IApiResponse } from "../../../../Interfaces";
 
 import "./styles.scss";
 
+// TODO:
+// fix currentItem desync due to onRow click event not firing on Operations icons
+// refactor redundant code in 3 components
+// refactor modal field value reducer action to use spread operator + array instead of 3x
+// regex validation of user inputs and error UX
+
 const ColumnOperations: React.FC = () => {
   const { state, dispatch } = useContext(StateContext);
   const { currentItem } = state;
-
-  // TODO: parent event to select row not fired when icons clicked
-  // leading to desynced state
 
   const resetData = (): void => {
     dispatch({ type: "RESET_DATA" });
@@ -43,10 +46,13 @@ const ColumnOperations: React.FC = () => {
 
   const handleEdit = (): void => {
     if (currentItem) {
-      // const { Id, ItemName, Cost } = currentItem;
-      const payload = { Id: 666, ItemName: "TEST", Cost: 666 };
-      console.log(payload);
-      dispatch({ type: "SET_MODAL_INPUT_VALUE", payload });
+      const { Id, ItemName, Cost } = currentItem;
+      const payloadId = { name: "Id", value: Id };
+      const payloadItemName = { name: "ItemName", value: ItemName };
+      const payloadCost = { name: "Cost", value: Cost };
+      dispatch({ type: "SET_MODAL_INPUT_VALUE", payload: payloadId });
+      dispatch({ type: "SET_MODAL_INPUT_VALUE", payload: payloadItemName });
+      dispatch({ type: "SET_MODAL_INPUT_VALUE", payload: payloadCost });
       dispatch({
         type: "OPEN_MODAL",
         payload: { actionType: "updateItem" },
